@@ -30,7 +30,7 @@ class CameraImageContainer extends BaseImageContainer {
   }
 
   @override
-  TensorBuffer getTensorBuffer(TfLiteType dataType) {
+  TensorBuffer getTensorBuffer(TensorType dataType) {
     throw UnsupportedError(
         'Converting CameraImage to TensorBuffer is not supported.');
   }

@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:audio_classification/main.dart';
 import 'package:flutter/services.dart';
 import 'package:collection/collection.dart';
@@ -15,7 +13,7 @@ class Classifier {
 
   late TensorBuffer _outputBuffer;
 
-  TfLiteType _outputType = TfLiteType.uint8;
+  TensorType _outputType = TensorType.uint8;
 
   final String _modelFileName = 'yamnet.tflite';
   final String _labelFileName = 'assets/yamnet_class_map.csv';
@@ -84,7 +82,9 @@ List<Category> getTopProbability(Map<String, double> labeledProb) {
   var pq = PriorityQueue<MapEntry<String, double>>(compare);
   pq.addAll(labeledProb.entries);
   var result = <Category>[];
-  while (pq.isNotEmpty && result.length < 5 && (pq.first.value > 0.1 || result.length < 3)) {
+  while (pq.isNotEmpty &&
+      result.length < 5 &&
+      (pq.first.value > 0.1 || result.length < 3)) {
     result.add(Category(pq.first.key, pq.first.value));
     pq.removeFirst();
   }

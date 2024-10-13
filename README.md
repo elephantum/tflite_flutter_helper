@@ -56,7 +56,7 @@ Sample app: [Audio Classification](https://github.com/am15h/tflite_flutter_helpe
 // Create a container for the result and specify that this is a quantized model.
 // Hence, the 'DataType' is defined as UINT8 (8-bit unsigned integer)
 TensorBuffer probabilityBuffer =
-    TensorBuffer.createFixedSize(<int>[1, 1001], TfLiteType.uint8);
+    TensorBuffer.createFixedSize(<int>[1, 1001], TensorType.uint8);
 ```
 
 #### Loading the model and running inference:
@@ -80,7 +80,6 @@ Developers can access the output directly through `probabilityBuffer.getDoubleLi
 If the model produces a quantized output, remember to convert the result.
 For the MobileNet quantized model, the developer needs to divide each output value by 255
 to obtain the probability ranging from 0 (least likely) to 1 (most likely) for each category.
-
 
 ### Optional: Mapping results to labels
 

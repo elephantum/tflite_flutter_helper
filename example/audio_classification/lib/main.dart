@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 import 'package:audio_classification/classifier.dart';
 import 'package:flutter/material.dart';
 import 'package:random_color/random_color.dart';
@@ -83,7 +82,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primaryColor: Colors.orange, accentColor: Colors.orange),
+      theme: ThemeData(primaryColor: Colors.orange),
       home: Scaffold(
         appBar: AppBar(
           title: const Text(

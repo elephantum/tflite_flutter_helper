@@ -18,8 +18,8 @@ abstract class Classifier {
   late TensorImage _inputImage;
   late TensorBuffer _outputBuffer;
 
-  late TfLiteType _inputType;
-  late TfLiteType _outputType;
+  late TensorType _inputType;
+  late TensorType _outputType;
 
   final String _labelsFileName = 'assets/labels.txt';
 
@@ -53,7 +53,7 @@ abstract class Classifier {
 
       _inputShape = interpreter.getInputTensor(0).shape;
       _outputShape = interpreter.getOutputTensor(0).shape;
-      _inputType = interpreter.getInputTensor(0).type;
+      _inputType = interpreter.getOutputTensor(0).type;
       _outputType = interpreter.getOutputTensor(0).type;
 
       _outputBuffer = TensorBuffer.createFixedSize(_outputShape, _outputType);

@@ -36,7 +36,7 @@ void main() {
 
       test('static', () {
         late TensorBuffer tensorBuffer =
-            TensorBuffer.createFixedSize([1, 3, 2], TfLiteType.uint8);
+            TensorBuffer.createFixedSize([1, 3, 2], TensorType.uint8);
         ByteBuffer buffer = Uint8List.fromList([1, 2, 3, 4, 5, 6]).buffer;
         tensorBuffer.loadBuffer(buffer);
         expect(tensorBuffer.getIntList(), [1, 2, 3, 4, 5, 6]);
@@ -82,7 +82,7 @@ void main() {
 
       test('static', () {
         late TensorBuffer tensorBuffer =
-            TensorBuffer.createFixedSize([1, 2, 2], TfLiteType.float32);
+            TensorBuffer.createFixedSize([1, 2, 2], TensorType.float32);
         var bdata = ByteData(16);
 
         for (int i = 0, j = 1; i < 16; i += 4, j++)
@@ -96,7 +96,7 @@ void main() {
 
       test('load list int', () {
         late TensorBuffer tensorBuffer =
-            TensorBuffer.createFixedSize([1, 2, 2], TfLiteType.float32);
+            TensorBuffer.createFixedSize([1, 2, 2], TensorType.float32);
 
         tensorBuffer.loadList(<int>[1, 2, 3, 4], shape: [1, 2, 2]);
         expect(tensorBuffer.getDoubleList(), <double>[1, 2, 3, 4]);
@@ -105,7 +105,7 @@ void main() {
 
       test('load list float', () {
         late TensorBuffer tensorBuffer =
-            TensorBuffer.createFixedSize([1, 2, 2], TfLiteType.float32);
+            TensorBuffer.createFixedSize([1, 2, 2], TensorType.float32);
 
         tensorBuffer.loadList(<double>[1.0, 2.0, 3.0, 4.0], shape: [1, 2, 2]);
         expect(tensorBuffer.getDoubleList(), <double>[1.0, 2.0, 3.0, 4.0]);
@@ -124,7 +124,7 @@ void main() {
     group('ops', () {
       test('normalize', () {
         late TensorBuffer tensorBuffer =
-            TensorBuffer.createFixedSize([3], TfLiteType.float32);
+            TensorBuffer.createFixedSize([3], TensorType.float32);
         tensorBuffer.loadList(<double>[0, 255, 127.5], shape: [3]);
 
         final processor =
@@ -160,8 +160,8 @@ void main() {
       test('load pixels', () {
         late TensorImage tensorImage = TensorImage();
 
-        tensorImage.loadRgbPixels(
-            image.getBytes(format: Format.rgb), [inputHeight, inputWidth, 3]);
+        tensorImage.loadRgbPixels(image.getBytes(order: ChannelOrder.rgb),
+            [inputHeight, inputWidth, 3]);
 
         expect(tensorImage.image.height, inputHeight);
         expect(tensorImage.image.width, inputWidth);
@@ -181,9 +181,9 @@ void main() {
         tensorbuffer = tensorImage.tensorBuffer;
         expect(tensorbuffer, isNotNull);
         expect(tensorbuffer.getFlatSize(),
-            image.getBytes(format: Format.rgb).length);
+            image.getBytes(order: ChannelOrder.rgb).length);
         expect(tensorbuffer.getIntList().length,
-            image.getBytes(format: Format.rgb).length);
+            image.getBytes(order: ChannelOrder.rgb).length);
       });
 
       test('fromTensorBuffer', () {

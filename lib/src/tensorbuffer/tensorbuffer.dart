@@ -24,36 +24,36 @@ abstract class TensorBuffer {
   ///  pre-allocated memory and fixed size. While the size of dynamic buffers can be changed.
   late bool _isDynamic;
 
-  /// Creates a [TensorBuffer] with specified [shape] and [TfLiteType]. Here are some
+  /// Creates a [TensorBuffer] with specified [shape] and [TensorType]. Here are some
   /// examples:
   ///
   /// ```dart
   /// Creating a float TensorBuffer with shape [2, 3]:
   /// List<int> shape = [2, 3];
-  /// TensorBuffer tensorBuffer = TensorBuffer.createFixedSize(shape, TfLiteType.float32);
+  /// TensorBuffer tensorBuffer = TensorBuffer.createFixedSize(shape, TensorType.float32);
   /// ```
   ///
   /// ```dart
   /// Creating an uint8 TensorBuffer of a scalar:
   /// List<int> shape = [2, 3];
-  /// TensorBuffer tensorBuffer = TensorBuffer.createFixedSize(shape, TfLiteType.uint8);
+  /// TensorBuffer tensorBuffer = TensorBuffer.createFixedSize(shape, TensorType.uint8);
   /// ```
   ///
   /// ```dart
   /// Creating an empty uint8 TensorBuffer:
   /// List<int> shape = [0];
-  /// TensorBuffer tensorBuffer = TensorBuffer.createFixedSize(shape, TfLiteType.uint8);
+  /// TensorBuffer tensorBuffer = TensorBuffer.createFixedSize(shape, TensorType.uint8);
   /// ```
   ///
   /// The size of a fixed-size TensorBuffer cannot be changed once it is created.
   ///
   /// Throws [ArgumentError.notNull] if [shape] is null and
   /// [ArgumentError] is [shape] has non-positive elements.
-  static TensorBuffer createFixedSize(List<int> shape, TfLiteType dataType) {
+  static TensorBuffer createFixedSize(List<int> shape, TensorType dataType) {
     switch (dataType) {
-      case TfLiteType.float32:
+      case TensorType.float32:
         return TensorBufferFloat(shape);
-      case TfLiteType.uint8:
+      case TensorType.uint8:
         return TensorBufferUint8(shape);
       default:
         throw ArgumentError(
@@ -63,16 +63,16 @@ abstract class TensorBuffer {
 
   final Endian endian = Endian.little;
 
-  /// Creates an empty dynamic [TensorBuffer] with specified [TfLiteType]. The shape of the
+  /// Creates an empty dynamic [TensorBuffer] with specified [TensorType]. The shape of the
   /// created [TensorBuffer] is {0}.
   ///
   /// Dynamic TensorBuffers will reallocate memory when loading arrays or data buffers of
   /// different buffer sizes.
-  static TensorBuffer createDynamic(TfLiteType dataType) {
+  static TensorBuffer createDynamic(TensorType dataType) {
     switch (dataType) {
-      case TfLiteType.float32:
+      case TensorType.float32:
         return TensorBufferFloat.dynamic();
-      case TfLiteType.uint8:
+      case TensorType.uint8:
         return TensorBufferUint8.dynamic();
       default:
         throw ArgumentError(
@@ -80,10 +80,10 @@ abstract class TensorBuffer {
     }
   }
 
-  /// Creates a [TensorBuffer] deep-copying data from another, with specified [TfLiteType].
+  /// Creates a [TensorBuffer] deep-copying data from another, with specified [TensorType].
   ///
   /// Throws [ArgumentError.notNull] if [buffer] is null.
-  static TensorBuffer createFrom(TensorBuffer buffer, TfLiteType dataType) {
+  static TensorBuffer createFrom(TensorBuffer buffer, TensorType dataType) {
     SupportPreconditions.checkNotNull(buffer,
         message: "Cannot create a buffer from null");
     TensorBuffer result;
@@ -95,8 +95,8 @@ abstract class TensorBuffer {
     // The only scenario we need float array is FLOAT32->FLOAT32, or we can always use INT as
     // intermediate container.
     // The assumption is not true when we support other data types.
-    if (buffer.getDataType() == TfLiteType.float32 &&
-        dataType == TfLiteType.float32) {
+    if (buffer.getDataType() == TensorType.float32 &&
+        dataType == TensorType.float32) {
       List<double> data = buffer.getDoubleList();
       result.loadList(data, shape: buffer.shape);
     } else {
@@ -119,7 +119,7 @@ abstract class TensorBuffer {
   List<int> getShape() => shape;
 
   /// Returns the data type of this buffer.
-  TfLiteType getDataType();
+  TensorType getDataType();
 
   /// Returns a List<double> of the values stored in this buffer. If the buffer is of different types
   /// than double, the values will be converted into double. For example, values in

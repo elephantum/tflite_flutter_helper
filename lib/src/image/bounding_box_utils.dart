@@ -50,7 +50,7 @@ class BoundingBoxUtils {
   /// [D] is the number of dimensions of the [tensor].
   ///
   /// Throws [ArgumentError] if [tensor] has data type other than
-  /// [TfLiteType.float32].
+  /// [TensorType.float32].
   static List<Rect> convert({
     required TensorBuffer tensor,
     List<int> valueIndex = const <int>[0, 1, 2, 3],
@@ -82,7 +82,7 @@ class BoundingBoxUtils {
           "Bounding box index list length ${valueIndex.length} is not 4. Got index list $valueIndex",
     );
     SupportPreconditions.checkArgument(
-        tensor.getDataType() == TfLiteType.float32,
+        tensor.getDataType() == TensorType.float32,
         errorMessage:
             "Bounding Boxes only create from FLOAT32 buffers. Got: ${tensor.getDataType()}");
 
